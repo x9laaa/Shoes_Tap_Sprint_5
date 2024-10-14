@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -79,8 +78,7 @@ fun CarritoView(navController: NavController, carritoViewModel: CarritoViewModel
             ) {
                 items(productosEnCarrito) { carritoItem ->
                     ProductoCarritoItem(
-                        carritoItem = carritoItem,
-                        carritoViewModel = carritoViewModel
+                        carritoItem = carritoItem, carritoViewModel = carritoViewModel
                     )
                 }
             }
@@ -101,8 +99,7 @@ fun CarritoView(navController: NavController, carritoViewModel: CarritoViewModel
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Button(
-                    onClick = { navController.navigate("l") },
-                    modifier = Modifier.fillMaxWidth()
+                    onClick = { navController.navigate("l") }, modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(text = "Finalizar Compra")
                 }
@@ -122,56 +119,53 @@ fun ProductoCarritoItem(carritoItem: CarritoItem, carritoViewModel: CarritoViewM
         ),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
-        Column(
+        Row(
             modifier = Modifier.padding(16.dp)
         ) {
-            Text(
-                text = carritoItem.producto.nombre,
-                style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.primary)
-            )
-            Text(
-                text = "Precio: $${carritoItem.producto.precio}",
-                style = MaterialTheme.typography.bodyLarge.copy(color = Color(0xFF424242))
-            )
-            Text(
-                text = "Cantidad: ${carritoItem.cantidad}",
-                style = MaterialTheme.typography.bodyLarge.copy(color = Color(0xFF424242))
-            )
+            Column {
+                Text(
+                    text = carritoItem.producto.nombre,
+                    style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.primary)
+                )
+                Text(
+                    text = "$${carritoItem.producto.precio}",
+                    style = MaterialTheme.typography.bodyLarge.copy(color = Color(0xFF424242))
+                )
+            }
 
-            Row(
-                modifier = Modifier.padding(top = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Button(
-                    onClick = {
-                        if (carritoItem.cantidad > 1) {
-                            carritoViewModel.actualizarCantidad(
-                                carritoItem.producto,
-                                carritoItem.cantidad - 1
-                            )
-                        } else {
-                            carritoViewModel.removerDelCarrito(carritoItem.producto)
+            Column {
+                Row {
+                    Button(
+                        onClick = {
+                            if (carritoItem.cantidad > 1) {
+                                carritoViewModel.actualizarCantidad(
+                                    carritoItem.producto, carritoItem.cantidad - 1
+                                )
+                            } else {
+                                carritoViewModel.removerDelCarrito(carritoItem.producto)
+                            }
                         }
-                    },
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text(text = "-")
+                    ) {
+                        Text(text = "-")
+                    }
+
+                    Text(
+                        text = "${carritoItem.cantidad}",
+                        style = MaterialTheme.typography.bodyLarge.copy(color = Color(0xFF424242))
+                    )
+
+                    Button(
+                        onClick = {
+                            carritoViewModel.actualizarCantidad(
+                                carritoItem.producto, carritoItem.cantidad + 1
+                            )
+                        }
+                        //, modifier = Modifier.weight(1f)
+                    ) {
+                        Text(text = "+")
+                    }
                 }
 
-                Spacer(modifier = Modifier.width(8.dp))
-
-                Button(
-                    onClick = {
-                        carritoViewModel.actualizarCantidad(
-                            carritoItem.producto,
-                            carritoItem.cantidad + 1
-                        )
-                    },
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text(text = "+")
-                }
             }
         }
     }
