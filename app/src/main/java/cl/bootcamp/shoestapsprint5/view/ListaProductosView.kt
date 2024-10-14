@@ -16,16 +16,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import cl.bootcamp.shoestapsprint5.components.NavigationBarSample
+import cl.bootcamp.shoestapsprint5.viewModel.CarritoViewModel
 import cl.bootcamp.shoestapsprint5.viewModel.ProductosViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
-fun ListaProductosView(navController: NavController) {
-    val viewModel: ProductosViewModel = viewModel()
+fun ListaProductosView(navController: NavController, productosViewModel: ProductosViewModel, carritoViewModel: CarritoViewModel) {
+    val productos = productosViewModel.productos.value ?: emptyList()
+    val totalArticulosCarrito = carritoViewModel.carrito.value?.sumOf { it.cantidad } ?: 0
 
     Scaffold(
         topBar = {
@@ -36,12 +38,15 @@ fun ListaProductosView(navController: NavController) {
                 ),
                 title = { Text("Lista de productos") },
             )
+        },
+        bottomBar = {
+            NavigationBarSample(navController, totalArticulosCarrito) // Pasa el total de artículos al carrito
         }
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues) // Asegura que el contenido esté debajo de la TopAppBar
-                .padding(16.dp)
+                .padding(2.dp)
         ) {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
@@ -50,7 +55,7 @@ fun ListaProductosView(navController: NavController) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(viewModel.productos) { producto ->
+                items(productos) { producto ->
                     ProductoCard(
                         producto = producto,
                         onClick = {

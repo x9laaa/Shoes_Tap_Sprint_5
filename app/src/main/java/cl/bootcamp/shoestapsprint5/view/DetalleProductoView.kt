@@ -23,12 +23,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import cl.bootcamp.shoestapsprint5.viewModel.CarritoViewModel
 import cl.bootcamp.shoestapsprint5.viewModel.ProductosViewModel
 
 @Composable
-fun DetalleProductoView(navController: NavController, productoId: Int) {
-    val viewModel: ProductosViewModel = viewModel()
-    val producto = viewModel.obtenerProductoPorId(productoId)
+fun DetalleProductoView(
+    navController: NavController,
+    productoId: Int,
+    productosViewModel: ProductosViewModel,
+    carritoViewModel: CarritoViewModel
+) {
+    val producto = productosViewModel.obtenerProductoPorId(productoId)
+
 
     producto?.let {
         Card(
@@ -95,7 +101,9 @@ fun DetalleProductoView(navController: NavController, productoId: Int) {
                 Spacer(modifier = Modifier.padding(8.dp))
 
                 Button(
-                    onClick = { navController.navigate("listaProductos") },
+                    onClick = {
+                        carritoViewModel.agregarAlCarrito(it)
+                        navController.navigate("listaProductos") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
