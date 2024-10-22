@@ -1,5 +1,6 @@
 package cl.bootcamp.shoestapsprint5.view
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -29,7 +32,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import cl.bootcamp.shoestapsprint5.model.CarritoItem
 import cl.bootcamp.shoestapsprint5.viewModel.CarritoViewModel
@@ -120,9 +125,19 @@ fun ProductoCarritoItem(carritoItem: CarritoItem, carritoViewModel: CarritoViewM
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Row(
-            modifier = Modifier.padding(16.dp)
+            verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(16.dp)
         ) {
-            Column {
+            Image(
+                painter = painterResource(id = carritoItem.producto.imagen),
+                contentDescription = carritoItem.producto.nombre,
+                modifier = Modifier
+                    .size(50.dp)
+                    .align(Alignment.CenterVertically)
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
                 Text(
                     text = carritoItem.producto.nombre,
                     style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.primary)
@@ -132,40 +147,28 @@ fun ProductoCarritoItem(carritoItem: CarritoItem, carritoViewModel: CarritoViewM
                     style = MaterialTheme.typography.bodyLarge.copy(color = Color(0xFF424242))
                 )
             }
-
-            Column {
-                Row {
-                    Button(
-                        onClick = {
-                            if (carritoItem.cantidad > 1) {
-                                carritoViewModel.actualizarCantidad(
-                                    carritoItem.producto, carritoItem.cantidad - 1
-                                )
-                            } else {
-                                carritoViewModel.removerDelCarrito(carritoItem.producto)
-                            }
-                        }
-                    ) {
-                        Text(text = "-")
+            Spacer(modifier = Modifier.width(16.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Cantidad y Botones
+                Button(onClick = {
+                    if (carritoItem.cantidad > 1) {
+                        carritoViewModel.actualizarCantidad(
+                            carritoItem.producto, carritoItem.cantidad - 1
+                        )
+                    } else {
+                        carritoViewModel.removerDelCarrito(carritoItem.producto)
                     }
-
-                    Text(
-                        text = "${carritoItem.cantidad}",
-                        style = MaterialTheme.typography.bodyLarge.copy(color = Color(0xFF424242))
+                }) { Text("-") }
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("${carritoItem.cantidad}", fontSize = 20.sp)
+                Spacer(modifier = Modifier.width(8.dp))
+                Button(onClick = {
+                    carritoViewModel.actualizarCantidad(
+                        carritoItem.producto, carritoItem.cantidad + 1
                     )
-
-                    Button(
-                        onClick = {
-                            carritoViewModel.actualizarCantidad(
-                                carritoItem.producto, carritoItem.cantidad + 1
-                            )
-                        }
-                        //, modifier = Modifier.weight(1f)
-                    ) {
-                        Text(text = "+")
-                    }
-                }
-
+                }) { Text("+") }
             }
         }
     }
