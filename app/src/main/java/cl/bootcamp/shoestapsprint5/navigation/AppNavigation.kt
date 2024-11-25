@@ -17,6 +17,7 @@ fun AppNavigation() {
     val productosViewModel: ProductosViewModel = viewModel()
     val carritoViewModel: CarritoViewModel = viewModel()
 
+
     NavHost(navController, startDestination = "listaProductos") {
         composable("listaProductos") {
             ListaProductosView(navController, productosViewModel, carritoViewModel)

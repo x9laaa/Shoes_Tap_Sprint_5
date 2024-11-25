@@ -71,4 +71,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.5")
     implementation("androidx.compose.foundation:foundation:1.7.3")
     implementation ("androidx.navigation:navigation-compose:2.8.0")
+
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+    implementation("com.google.code.gson:gson:2.8.8")
 }

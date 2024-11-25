@@ -1,7 +1,8 @@
 package cl.bootcamp.shoestapsprint5.viewModel
-import androidx.lifecycle.ViewModel
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import cl.bootcamp.shoestapsprint5.model.CarritoItem
 import cl.bootcamp.shoestapsprint5.model.Producto
 
@@ -9,9 +10,6 @@ class CarritoViewModel : ViewModel() {
     private val _carrito = MutableLiveData<List<CarritoItem>>()
     val carrito: LiveData<List<CarritoItem>> = _carrito
 
-    init {
-        _carrito.value = listOf()
-    }
 
     fun agregarAlCarrito(producto: Producto) {
         val listaActual = _carrito.value ?: listOf()

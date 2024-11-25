@@ -15,8 +15,11 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import cl.bootcamp.shoestapsprint5.R
+import cl.bootcamp.shoestapsprint5.components.AppBarView
 import cl.bootcamp.shoestapsprint5.components.NavigationBarSample
 import cl.bootcamp.shoestapsprint5.viewModel.CarritoViewModel
 import cl.bootcamp.shoestapsprint5.viewModel.ProductosViewModel
@@ -31,13 +34,7 @@ fun ListaProductosView(navController: NavController, productosViewModel: Product
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Blue,
-                    titleContentColor = Color.White
-                ),
-                title = { Text("Lista de productos") },
-            )
+            AppBarView(stringResource(R.string.app_name))
         },
         bottomBar = {
             NavigationBarSample(navController, totalArticulosCarrito) // Pasa el total de artículos al carrito
